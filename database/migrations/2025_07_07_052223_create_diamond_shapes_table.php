@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ring_styles', function (Blueprint $table) {
+        Schema::create('diamond_shapes', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
             $table->bigInteger('cat_id')->nullable();
-            $table->string('style_image')->nullable();
+            $table->string('shape_image')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ring_styles');
+        Schema::dropIfExists('diamond_shapes');
     }
 };

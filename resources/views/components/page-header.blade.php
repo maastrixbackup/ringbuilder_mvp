@@ -20,5 +20,6 @@
             @endif
         </ul>
     </div>
-    <a href="{{ $btnLink ?? 'javascript:;' }}" class="btn btn-primary  ms-auto text-right">{{ $btnText ?? '' }}</a>
+    <a href="{{ $btnLink ?? 'javascript:;' }}" class="btn btn-primary  ms-auto text-right"
+        onclick="{{ $btnFunClick }}">{{ $btnText ?? '' }}</a>
 </div>

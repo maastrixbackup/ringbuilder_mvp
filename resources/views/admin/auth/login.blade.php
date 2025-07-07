@@ -1,10 +1,10 @@
 @extends('admin.layouts.guest')
 @section('content')
-    <div class="row justify-content-center w-100">
-        <div class="col-md-8 col-lg-6 col-xxl-3">
+    <div class="row justify-content-center w-50">
+        <div class="col-md-6 ">
             <div class="card mb-0">
                 <div class="card-body">
-                    <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                    <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-50">
                         <img src="{{ asset('assets/images/logos/ring_builder.png') }}" width="280" alt="">
                         {{-- <h3> Admin Login</h3> --}}
                     </a>

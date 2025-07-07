@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
-@section('title', 'Style Edit')
+@section('title', 'Shape Add')
 @section('content')
     @include('components.page-header', [
-        'title' => 'Ring Style',
-        'btnLink' => route('admin.ring-style.index'),
+        'title' => 'Diamond Shapes',
+        'btnLink' => route('admin.diamond-shapes'),
         'btnText' => 'Back',
         'btnFunClick' => '',
         'breadcrumbs' => [
-            ['name' => 'Ring Style'], //  'url' = 'javascript:;'
-            ['name' => ' / Style Edit'], // No URL = current page
+            ['name' => 'Diamond Shapes'], //  'url' = 'javascript:;'
+            ['name' => ' / Shape Add'], // No URL = current page
         ],
     ])
     <div class="row">
@@ -25,15 +25,13 @@
             @endif
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.ring-style.update', $style->id) }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('admin.store-d-shape') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <div class="row mb-2">
-                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Style Name</label>
+                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Shape Name</label>
                             <div class="form-group col-md-8">
-                                <input type="text" class="form-control" name="title" required placeholder=""
-                                    value="{{ $style->title ?? '' }}">
+                                <input type="text" class="form-control" name="title" placeholder=""
+                                    value="{{ old('title') }}">
                                 @error('title')
                                     <div class="alert alert-sm alert-danger my-2 py-1" id="auto-alert">
                                         {{ $message }}
@@ -41,26 +39,20 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Style Image</label>
+                        <div class="row mb-2 d-none">
+                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Shape Image</label>
                             <div class="form-group col-md-4">
                                 <input type="file" name="image" id="image" class="form-control"
-                                    accept=".jpg,.png,.jpeg,.gif" onchange="previewImage(event)">
+                                    accept=".jpg,.png,.jpeg,.gif,.svg" onchange="previewImage(event)">
                             </div>
                             <div class="form-group col-md-4">
-                                @if (isset($style->style_image))
-                                    <img id="imagePreview"
-                                        src="{{ asset('storage/images/ring_styles/' . $style->style_image) }}"
-                                        alt="Image Preview" width="150" class="mt-2 rounded">
-                                @else
-                                    <img id="imagePreview" style="display: none;" alt="Image Preview" width="150"
-                                        class="mt-2 rounded">
-                                @endif
-
+                                <img id="imagePreview" src="#" alt="Image Preview" style="display:none;"
+                                    width="150" class="mt-2 rounded">
                             </div>
                         </div>
                         <div class="d-flex justify-content-center my-4  gap-3 ">
-                            <button class="btn btn-secondary" type="submit">Update</button>
+                            <button class="btn btn-secondary" type="submit">Submit</button>
+                            <button type="reset" class="btn btn-light px-4">Reset</button>
                         </div>
                     </form>
                 </div>

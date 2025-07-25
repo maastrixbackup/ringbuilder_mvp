@@ -339,7 +339,7 @@ class RingStyleController extends Controller
 
         $ringColor = RingColor::where('color_name', $request->color_name)->where('color_code', $request->color_code)->where('id', '!=', $id)->first();
         if ($ringColor) {
-            return back()->with('error', 'Karat already exists add different');
+            return back()->with('error', 'Color already exists add different');
         }
 
         try {

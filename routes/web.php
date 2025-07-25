@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DiamondController;
 use App\Http\Controllers\Admin\RingController;
 use App\Http\Controllers\Admin\RingStyleController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,14 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/optimize', function () {
+        Artisan::call('route:clear');
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        return 'Command executed successfully!';
+    });
+    
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('loginSubmit');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -59,6 +68,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/diamond-shapes', [DiamondController::class, 'diamondShapeList'])->name('diamond-shapes');
         Route::get('/create-shape', [DiamondController::class, 'createDShape'])->name('create-shape');
         Route::post('/store-shape', [DiamondController::class, 'storeDShape'])->name('store-d-shape');
+        Route::delete('/delete-shape/{id}', [DiamondController::class, 'deleteDiamondShape'])->name('delete-d-shape');
+
+        Route::get('/diamond-colors', [DiamondController::class, 'diamondColorList'])->name('diamond-colors');
+        Route::get('/create-color', [DiamondController::class, 'createDColor'])->name('create-color');
+        Route::post('/store-color', [DiamondController::class, 'storeDColor'])->name('store-d-color');
+        Route::get('/diamond-color-edit/{id}', [DiamondController::class, 'diamondColorEdit'])->name('diamond-color-edit');
+        Route::post('/diamond-color-update/{id}', [DiamondController::class, 'diamondColorUpdate'])->name('diamond-color-update');
+        Route::delete('/delete-color/{id}', [DiamondController::class, 'deleteDiamondColor'])->name('delete-d-color');
     });
 });
 

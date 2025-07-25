@@ -140,6 +140,25 @@
                             </div>
                         </div>
                         <div class="row mb-2">
+                            <label for="ring_karat" class="col-md-3 my-2 d-flex justify-content-end ">Diamond Shape*</label>
+                            <div class="form-group col-md-8">
+                                <select name="d_shape" id="d_shape" class="form-control" required>
+                                    <option value="" selected disabled>Select Shape</option>
+                                    @foreach ($shapes as $shape)
+                                        <option value="{{ $shape->title }}"
+                                            {{ $ring->diamond_shape == $shape->title ? 'selected' : '' }}>
+                                            {{ $shape->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('d_shape')
+                                    <div class="alert alert-sm alert-danger my-2 py-1" id="auto-alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-2">
                             <label for="ring_price" class="col-md-3 my-2 d-flex justify-content-end ">Price*</label>
                             <div class="form-group col-md-8">
                                 <input type="text" class="form-control" name="ring_price" id="ring_price" required
@@ -151,14 +170,29 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-2 d-none">
-                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Style Image</label>
+                        <div class="row mb-2 ">
+                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Ring Image</label>
                             <div class="form-group col-md-4">
-                                <input type="file" name="image" id="image" class="form-control"
-                                    accept=".jpg,.png,.jpeg,.gif,.svg" onchange="previewImage(event)">
+                                <input type="file" name="ring_image" id="image" class="form-control"
+                                    accept=".jpg,.png,.jpeg,.gif,.svg" onchange="previewImage(event, 'imagePreview')">
                             </div>
                             <div class="form-group col-md-4">
-                                <img id="imagePreview" src="#" alt="Image Preview" style="display:none;"
+                                <img id="imagePreview" src="{{ asset('storage/images/rings/' . $ring->ring_image) }}"
+                                    alt="Image Preview" @if (!isset($ring->ring_image)) style="display:none;" @endif
+                                    width="150" class="mt-2 rounded">
+                            </div>
+                        </div>
+                        <div class="row mb-2 ">
+                            <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Ring Hover
+                                Image</label>
+                            <div class="form-group col-md-4">
+                                <input type="file" name="ring_hover_img" id="image" class="form-control"
+                                    accept=".jpg,.png,.jpeg,.gif,.svg" onchange="previewImage(event, 'imagePreview1')">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <img id="imagePreview1"
+                                    src="{{ asset('storage/images/rings/' . $ring->ring_hover_img) }}"
+                                    alt="Image Preview" @if (!isset($ring->ring_hover_img)) style="display:none;" @endif
                                     width="150" class="mt-2 rounded">
                             </div>
                         </div>
@@ -173,9 +207,9 @@
 @endsection
 @push('scripts')
     <script>
-        function previewImage(event) {
+        function previewImage(event, previewId) {
             const input = event.target;
-            const preview = document.getElementById('imagePreview');
+            const preview = document.getElementById(previewId);
 
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -189,6 +223,7 @@
                 preview.style.display = 'none';
             }
         }
+
 
         function generateSlug(text) {
             return text

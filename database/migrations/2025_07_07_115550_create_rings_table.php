@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->string('sku')->nullable();
             $table->string('ring_style')->nullable();
+            $table->string('ring_head_style')->nullable();
             $table->string('ring_size')->nullable();
             $table->string('ring_karat')->nullable();
             $table->string('ring_weight')->nullable();
             $table->string('ring_color')->nullable();
+            $table->string('diamond_shape')->nullable();
             $table->decimal('ring_price', 10, 2)->nullable();
             $table->string('ring_image')->nullable();
             $table->enum('status', [0, 1])->default(0);

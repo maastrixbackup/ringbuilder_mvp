@@ -36,6 +36,7 @@
                                     <th>SKU</th>
                                     <th> Style</th>
                                     <th> Size</th>
+                                    <th> Diamond</th>
                                     <th> Karat</th>
                                     <th> Color</th>
                                     <th>Price</th>
@@ -54,6 +55,7 @@
                                         <td class="text-capitalize">{{ $ring->sku }}</td>
                                         <td class="text-capitalize">{{ $ring->ring_style }}</td>
                                         <td>{{ $ring->ring_size }}cm</td>
+                                        <td class="text-capitalize">{{ $ring->diamond_shape }}</td>
                                         <td class="text-capitalize">{{ $ring->ring_karat }}K</td>
                                         <td class="text-capitalize">{{ $color->color_name ?? 'N/A' }}</td>
                                         <td class="text-capitalize"><b>${{ $ring->ring_price }}</b></td>

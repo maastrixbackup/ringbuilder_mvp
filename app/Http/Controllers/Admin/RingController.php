@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DiamondShape;
 use App\Models\JewelleryKarat;
 use App\Models\Ring;
 use App\Models\RingColor;
@@ -11,6 +12,7 @@ use App\Models\RingStyle;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RingController extends Controller
 {
@@ -28,12 +30,13 @@ class RingController extends Controller
      */
     public function create()
     {
-        $karats = JewelleryKarat::latest()->get();
-        $colors = RingColor::latest()->get();
-        $size = RingSize::latest()->get();
-        $style = RingStyle::latest()->get();
+        $karats = JewelleryKarat::orderBy('id')->get();
+        $colors = RingColor::orderBy('id')->get();
+        $size = RingSize::orderBy('id')->get();
+        $style = RingStyle::orderBy('id')->get();
+        $shapes = DiamondShape::orderBy('id')->get();
 
-        return view('admin.rings.add', compact('karats', 'colors', 'size', 'style'));
+        return view('admin.rings.add', compact('karats', 'colors', 'size', 'style', 'shapes'));
     }
 
     /**
@@ -42,31 +45,62 @@ class RingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|unique:rings,title',
+            'title' => 'required',
             'slug' => 'required',
-            'ring_price' => 'required',
             'ring_color' => 'required',
             'ring_style' => 'required',
             'ring_size' => 'required',
-            'ring_karat' => 'required'
+            'ring_karat' => 'required',
+            'd_shape' => 'required|array',
+            'ring_price' => 'required|array',
         ]);
 
-        try {
-            $ring = new Ring();
-            $ring->title = $request->title;
-            $ring->slug = $request->slug;
-            $ring->sku = $this->generateSku('RING');
-            $ring->ring_color = $request->ring_color;
-            $ring->ring_style = $request->ring_style;
-            $ring->ring_size = $request->ring_size;
-            $ring->ring_karat = $request->ring_karat;
-            $ring->ring_price = $request->ring_price;
-            $ring->save();
+        DB::beginTransaction();
 
-            return redirect()->route('admin.rings.index')->with('success', 'Ring Added Successfully');
+        try {
+            $destinationPath = public_path('storage/images/rings/');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            $slug = $this->slugChecker($request->slug);
+            $ringImage = $this->handleImageUpload($request, 'ring_image', $destinationPath, 'r_img_');
+            $ringHoverImage = $this->handleImageUpload($request, 'ring_hover_img', $destinationPath, 'rh_img_');
+
+            foreach ($request->d_shape as $key => $shape) {
+                $ring = new Ring();
+                $ring->title = $request->title;
+                $ring->slug = $slug;
+                $ring->sku = $this->generateSku('RING');
+                $ring->ring_color = $request->ring_color;
+                $ring->ring_style = $request->ring_style;
+                $ring->ring_size = $request->ring_size;
+                $ring->ring_karat = $request->ring_karat;
+                $ring->diamond_shape = $shape;
+                $ring->ring_price = $request->ring_price[$key] ?? 0;
+                $ring->ring_image = $ringImage;
+                $ring->ring_hover_img = $ringHoverImage;
+                $ring->save();
+            }
+
+            DB::commit();
+            return redirect()->route('admin.rings.index')->with('success', 'Ring(s) added successfully.');
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            DB::rollBack();
+            return back()->with('error', 'Failed to add ring: ' . $th->getMessage());
         }
+    }
+
+    private function handleImageUpload(Request $request, $fieldName, $destinationPath, $prefix)
+    {
+        if ($request->hasFile($fieldName)) {
+            $file = $request->file($fieldName);
+            $fileName = $prefix . time() . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+            if ($file->move($destinationPath, $fileName)) {
+                return $fileName;
+            }
+        }
+        return null;
     }
 
     /**
@@ -82,13 +116,14 @@ class RingController extends Controller
      */
     public function edit(string $id)
     {
-        $karats = JewelleryKarat::latest()->get();
-        $colors = RingColor::latest()->get();
-        $size = RingSize::latest()->get();
-        $style = RingStyle::latest()->get();
+        $karats = JewelleryKarat::orderBy('id')->get();
+        $colors = RingColor::orderBy('id')->get();
+        $size = RingSize::orderBy('id')->get();
+        $style = RingStyle::orderBy('id')->get();
+        $shapes = DiamondShape::orderBy('id')->get();
         $ring = Ring::find($id);
 
-        return view('admin.rings.edit', compact('karats', 'colors', 'size', 'style', 'ring'));
+        return view('admin.rings.edit', compact('karats', 'colors', 'size', 'style', 'ring', 'shapes'));
     }
 
     /**
@@ -97,16 +132,24 @@ class RingController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title' => 'required|unique:rings,title,' . $id,
-            'slug' => 'required',
-            'ring_price' => 'required',
-            'ring_color' => 'required',
-            'ring_style' => 'required',
-            'ring_size' => 'required',
-            'ring_karat' => 'required'
+            'title' => 'required', // Exclude current record's ID
+            'slug' => 'required|string|unique:rings,title,' . $id,
+            'ring_price' => 'required|numeric',
+            'd_shape' => 'required|string',
+            'ring_color' => 'required|string',
+            'ring_style' => 'required|string',
+            'ring_size' => 'required|string',
+            'ring_karat' => 'required|string'
         ]);
 
+
         try {
+
+            $destinationPath = public_path('storage/images/rings/');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
             $ring = Ring::find($id);
             $ring->title = $request->title;
             $ring->slug = $request->slug;
@@ -114,7 +157,42 @@ class RingController extends Controller
             $ring->ring_style = $request->ring_style;
             $ring->ring_size = $request->ring_size;
             $ring->ring_karat = $request->ring_karat;
+            $ring->diamond_shape = $request->d_shape;
             $ring->ring_price = $request->ring_price;
+
+            if ($request->hasFile('ring_image')) {
+                $file = $request->file('ring_image');
+                $fileName = 'r_img_' . time() . '.' . $file->getClientOriginalExtension();
+
+                // Delete old file first
+                if (!empty($ring->ring_image)) {
+                    $oldFilePath = $destinationPath . $ring->ring_image;
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+
+                if ($file->move($destinationPath, $fileName)) {
+                    $ring->ring_image = $fileName;
+                }
+            }
+
+            if ($request->hasFile('ring_hover_img')) {
+                $file = $request->file('ring_hover_img');
+                $fileName = 'rh_img_' . time() . '.' . $file->getClientOriginalExtension();
+
+                // Delete old file first
+                if (!empty($ring->ring_hover_img)) {
+                    $oldFilePath = $destinationPath . $ring->ring_hover_img;
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+
+                if ($file->move($destinationPath, $fileName)) {
+                    $ring->ring_hover_img = $fileName;
+                }
+            }
             $ring->save();
 
             return redirect()->route('admin.rings.index')->with('success', 'Ring Updated Successfully');
@@ -136,9 +214,23 @@ class RingController extends Controller
         }
     }
 
+    public function slugChecker($slug)
+    {
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (
+            Ring::where('slug', $slug)
+            // ->when($id, fn($query) => $query->where('id', '!=', $id))
+            ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
+    }
     public function generateSku($categoryCode = 'ABC')
     {
-
 
         // Generate a random 3-digit number
         $numberPart = mt_rand(100, 999);

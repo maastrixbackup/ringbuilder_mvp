@@ -48,12 +48,12 @@
                                     </td> --}}
                                     <td>
                                         <a href="{{ route('admin.ring-style.edit', $shape->id) }}"
-                                            class="btn btn-sm btn-outline-primary" title="Edit">
+                                            class="btn btn-sm btn-outline-primary d-none" title="Edit">
                                             <i class="ti ti-pencil me-0"></i>
                                         </a>
 
-                                        <form action="{{ route('admin.ring-style.destroy', $shape->id) }}" method="POST"
-                                            style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                        <form action="{{ route('admin.delete-d-shape', $shape->id) }}" method="POST"
+                                            style="display:inline;" onsubmit="return confirm('Are you sure to delete?');">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-danger" title="Delete">

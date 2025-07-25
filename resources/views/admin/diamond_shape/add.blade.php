@@ -7,7 +7,7 @@
         'btnText' => 'Back',
         'btnFunClick' => '',
         'breadcrumbs' => [
-            ['name' => 'Diamond Shapes'], //  'url' = 'javascript:;'
+            ['name' => 'Diamond Shapes','url' => route('admin.diamond-shapes')], //  'url' = 'javascript:;'
             ['name' => ' / Shape Add'], // No URL = current page
         ],
     ])

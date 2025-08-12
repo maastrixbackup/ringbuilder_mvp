@@ -39,7 +39,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-2 d-none">
+                        <div class="row mb-2 ">
                             <label for="title" class="col-md-3 my-2 d-flex justify-content-end ">Shape Image</label>
                             <div class="form-group col-md-4">
                                 <input type="file" name="image" id="image" class="form-control"

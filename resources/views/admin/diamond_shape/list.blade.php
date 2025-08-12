@@ -31,7 +31,7 @@
                             <tr>
                                 <th>Sl.No</th>
                                 <th>Title</th>
-                                {{-- <th>Image</th> --}}
+                                <th>Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -40,15 +40,15 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td class="text-capitalize">{{ $shape->title }}</td>
-                                    {{-- <td>
-                                        @isset($shape->style_image)
-                                            <img src="{{ asset('storage/images/ring_styles/' . $shape->style_image) }}"
-                                                alt="Image Preview" width="60" class="mt-2 rounded">
-                                        @endisset
-                                    </td> --}}
                                     <td>
-                                        <a href="{{ route('admin.ring-style.edit', $shape->id) }}"
-                                            class="btn btn-sm btn-outline-primary d-none" title="Edit">
+                                        @isset($shape->shape_image)
+                                            <img src="{{ asset('storage/images/shapes/' . $shape->shape_image) }}"
+                                                alt="Image Preview" width="30" class="mt-2 rounded">
+                                        @endisset
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.edit-d-shape', $shape->id) }}"
+                                            class="btn btn-sm btn-outline-primary " title="Edit">
                                             <i class="ti ti-pencil me-0"></i>
                                         </a>
 

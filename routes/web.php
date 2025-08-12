@@ -33,7 +33,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Artisan::call('cache:clear');
         return 'Command executed successfully!';
     });
-    
+
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('loginSubmit');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -43,6 +43,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Rings
         Route::resource('/rings', RingController::class)->names('rings');
+        // Diamonds
+        Route::resource('/diamonds', DiamondController::class)->names('diamonds');
 
         // Ring Style
         Route::resource('/ring-style', RingStyleController::class)->names('ring-style');
@@ -68,6 +70,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/diamond-shapes', [DiamondController::class, 'diamondShapeList'])->name('diamond-shapes');
         Route::get('/create-shape', [DiamondController::class, 'createDShape'])->name('create-shape');
         Route::post('/store-shape', [DiamondController::class, 'storeDShape'])->name('store-d-shape');
+        Route::get('/edit-shape/{id}', [DiamondController::class, 'editDShape'])->name('edit-d-shape');
+        Route::post('/update-shape/{id}', [DiamondController::class, 'updateDShape'])->name('update-d-shape');
         Route::delete('/delete-shape/{id}', [DiamondController::class, 'deleteDiamondShape'])->name('delete-d-shape');
 
         Route::get('/diamond-colors', [DiamondController::class, 'diamondColorList'])->name('diamond-colors');

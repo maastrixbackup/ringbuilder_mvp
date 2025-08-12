@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DiamondProduct;
 use App\Models\DiamondShape;
 use App\Models\JewelleryKarat;
 use App\Models\Ring;
@@ -88,6 +89,42 @@ class ApiController extends Controller
             'products' => $products,
         ];
 
+
+        return response()->json(['status' => true, 'data' => $data]);
+    }
+
+    public function diamondProducts(Request $request)
+    {
+        $productQuery = DiamondProduct::orderByDesc('id');
+
+        if ($request->has('shape')) {
+            $productQuery->where('shape', $request->shape);
+        }
+
+        $products = $productQuery->get()->map(function ($p) {
+            return [
+                'id' => $p->id,
+                'title' => $p->title,
+                'slug' => $p->slug,
+                'price' => $p->price,
+                'main_image' => asset('storage/images/diamonds/' . $p->img_one),
+                // Add more fields as needed
+            ];
+        });
+
+
+        $shapes = DiamondShape::orderBy('id')->get()->map(function ($sp) {
+            return [
+                'id' => $sp->id,
+                'title' => $sp->title,
+                'image' => asset('storage/images/shapes/' . $sp->shape_image),
+            ];
+        });
+
+        $data = [
+            'shapes' => $shapes,
+            'products' => $products,
+        ];
 
         return response()->json(['status' => true, 'data' => $data]);
     }

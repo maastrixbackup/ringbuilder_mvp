@@ -46,7 +46,7 @@
                         <span class="hide-menu">Ring Size</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->routeIs(['admin.ring-sizes']) ? 'active' : '' }}"
                         href="{{ route('admin.ring-sizes') }}" aria-expanded="false">
                         <span>
@@ -54,8 +54,8 @@
                         </span>
                         <span class="hide-menu">Ring Width</span>
                     </a>
-                </li>
-                
+                </li> --}}
+
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->routeIs(['admin.jewellery-karats']) ? 'active' : '' }}"
                         href="{{ route('admin.jewellery-karats') }}" aria-expanded="false">
@@ -105,6 +105,15 @@
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Diamond Color</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamonds.index', 'admin.diamonds.create']) ? 'active' : '' }}"
+                        href="{{ route('admin.diamonds.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Diamond Products</span>
                     </a>
                 </li>
             </ul>

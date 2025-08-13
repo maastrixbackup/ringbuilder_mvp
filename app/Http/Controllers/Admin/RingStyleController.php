@@ -7,6 +7,7 @@ use App\Models\JewelleryKarat;
 use App\Models\RingColor;
 use App\Models\RingSize;
 use App\Models\RingStyle;
+use App\Models\RingWidth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -357,4 +358,66 @@ class RingStyleController extends Controller
         RingColor::find($id)->delete();
         return back()->with('success', 'Color Deleted');
     }
+
+    public function ringWidth()
+    {
+        $ringWidths = RingWidth::orderBy('id')->get();
+        return view('admin.ring_width.list', compact('ringWidths'));
+    }
+
+    public function ringWidthStore(Request $request)
+    {
+        if (!$request->width) {
+            return back()->with('error', 'Ring Width is required');
+        }
+
+        $ringWidth = RingWidth::where('width', $request->width)->first();
+        if ($ringWidth) {
+            return back()->with('error', 'Width already exists add different');
+        }
+
+        try {
+            $ringWidth = new RingWidth();
+            $ringWidth->width = $request->width;
+            $ringWidth->save();
+
+            return back()->with('success', 'Width Added Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function ringWidthEdit($id)
+    {
+        $rw = RingWidth::find($id);
+        return response()->json(['status' => true, 'data' => $rw]);
+    }
+
+    public function ringWidthUpdate(Request $request, $id)
+    {
+        if (!$request->width) {
+            return back()->with('error', 'Ring Width required');
+        }
+
+        $ringWidth = RingWidth::where('width', $request->width)->where('id', '!=', $id)->first();
+        if ($ringWidth) {
+            return back()->with('error', 'Width already exists add different');
+        }
+
+        try {
+            $rw = RingWidth::find($id);
+            $rw->width = $request->width;
+            $rw->save();
+            return back()->with('success', 'Width Updated Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function ringWidthDelete($id)
+    {
+        RingWidth::find($id)->delete();
+        return back()->with('success', 'Width Deleted');
+    }
+
 }

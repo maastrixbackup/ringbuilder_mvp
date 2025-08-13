@@ -39,6 +39,7 @@
                                     <th> Diamond</th>
                                     <th> Karat</th>
                                     <th> Color</th>
+                                    <th> Width</th>
                                     <th>Price</th>
                                     <th class="d-none">Image</th>
                                     <th>Action</th>
@@ -48,6 +49,7 @@
                                 @foreach ($rings as $ring)
                                     @php
                                         $color = \App\Models\RingColor::find($ring->ring_color);
+                                        $width = \App\Models\RingWidth::find($ring->ring_width);
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -58,6 +60,7 @@
                                         <td class="text-capitalize">{{ $ring->diamond_shape }}</td>
                                         <td class="text-capitalize">{{ $ring->ring_karat }}K</td>
                                         <td class="text-capitalize">{{ $color->color_name ?? 'N/A' }}</td>
+                                        <td class="text-capitalize">{{ $width->width ?? 'N/A' }}</td>
                                         <td class="text-capitalize"><b>${{ $ring->ring_price }}</b></td>
                                         <td class="d-none">
                                             @isset($ring->ring_image)

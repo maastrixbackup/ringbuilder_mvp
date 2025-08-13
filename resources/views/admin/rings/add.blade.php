@@ -102,6 +102,25 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="row mb-2">
+                            <label for="ring_color" class="col-md-3 my-2 d-flex justify-content-end ">Ring Width*</label>
+                            <div class="form-group col-md-8">
+                                <select required name="ring_width" id="ring_width" class="form-control">
+                                    <option value="" selected disabled>Select Width</option>
+                                    @foreach ($width as $w)
+                                        <option value="{{ $w->id }}">{{ $w->width }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('ring_width')
+                                    <div class="alert alert-sm alert-danger my-2 py-1" id="auto-alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-2">
                             <label for="ring_karat" class="col-md-3 my-2 d-flex justify-content-end ">Ring Karat*</label>
                             <div class="form-group col-md-8">

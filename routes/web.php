@@ -67,12 +67,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/ring-color-update/{id}', [RingStyleController::class, 'ringColorUpdate'])->name('ring-color-update');
         Route::delete('/ring-color-delete/{id}', [RingStyleController::class, 'ringColorDelete'])->name('ring-color-delete');
 
+        // Ring Width
+        Route::get('/ring-width', [RingStyleController::class, 'ringWidth'])->name('ring-width');
+        Route::post('/ring-width-store', [RingStyleController::class, 'ringWidthStore'])->name('ring-width-store');
+        Route::get('/ring-width-edit/{id}', [RingStyleController::class, 'ringWidthEdit'])->name('ring-width-edit');
+        Route::post('/ring-width-update/{id}', [RingStyleController::class, 'ringWidthUpdate'])->name('ring-width-update');
+        Route::delete('/ring-width-delete/{id}', [RingStyleController::class, 'ringWidthDelete'])->name('ring-width-delete');
+
         Route::get('/diamond-shapes', [DiamondController::class, 'diamondShapeList'])->name('diamond-shapes');
         Route::get('/create-shape', [DiamondController::class, 'createDShape'])->name('create-shape');
         Route::post('/store-shape', [DiamondController::class, 'storeDShape'])->name('store-d-shape');
         Route::get('/edit-shape/{id}', [DiamondController::class, 'editDShape'])->name('edit-d-shape');
         Route::post('/update-shape/{id}', [DiamondController::class, 'updateDShape'])->name('update-d-shape');
         Route::delete('/delete-shape/{id}', [DiamondController::class, 'deleteDiamondShape'])->name('delete-d-shape');
+
+        Route::get('/diamond-cuts', [DiamondController::class, 'diamondCutList'])->name('diamond-cuts');
+        Route::post('/store-cut', [DiamondController::class, 'storeDiamondCut'])->name('store-d-cut');
+        Route::get('/edit-cut/{id}', [DiamondController::class, 'editDiamondCut'])->name('edit-d-cut');
+        Route::post('/update-cut/{id}', [DiamondController::class, 'updateDiamondCut'])->name('update-d-cut');
+        Route::delete('/delete-cut/{id}', [DiamondController::class, 'deleteDiamondCut'])->name('delete-d-cut');
 
         Route::get('/diamond-colors', [DiamondController::class, 'diamondColorList'])->name('diamond-colors');
         Route::get('/create-color', [DiamondController::class, 'createDColor'])->name('create-color');

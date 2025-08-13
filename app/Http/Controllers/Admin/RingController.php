@@ -9,6 +9,7 @@ use App\Models\Ring;
 use App\Models\RingColor;
 use App\Models\RingSize;
 use App\Models\RingStyle;
+use App\Models\RingWidth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -35,8 +36,9 @@ class RingController extends Controller
         $size = RingSize::orderBy('id')->get();
         $style = RingStyle::orderBy('id')->get();
         $shapes = DiamondShape::orderBy('id')->get();
+        $width = RingWidth::orderBy('id')->get();
 
-        return view('admin.rings.add', compact('karats', 'colors', 'size', 'style', 'shapes'));
+        return view('admin.rings.add', compact('karats', 'colors', 'size', 'style', 'shapes', 'width'));
     }
 
     /**
@@ -48,11 +50,13 @@ class RingController extends Controller
             'title' => 'required',
             'slug' => 'required',
             'ring_color' => 'required',
+            'ring_width' => 'required',
             'ring_style' => 'required',
             'ring_size' => 'required',
             'ring_karat' => 'required',
             'd_shape' => 'required|array',
             'ring_price' => 'required|array',
+
         ]);
 
         DB::beginTransaction();
@@ -73,6 +77,7 @@ class RingController extends Controller
                 $ring->slug = $slug;
                 $ring->sku = $this->generateSku('RING');
                 $ring->ring_color = $request->ring_color;
+                $ring->ring_width = $request->ring_width;
                 $ring->ring_style = $request->ring_style;
                 $ring->ring_size = $request->ring_size;
                 $ring->ring_karat = $request->ring_karat;
@@ -121,9 +126,10 @@ class RingController extends Controller
         $size = RingSize::orderBy('id')->get();
         $style = RingStyle::orderBy('id')->get();
         $shapes = DiamondShape::orderBy('id')->get();
+        $widths = RingWidth::orderBy('id')->get();
         $ring = Ring::find($id);
 
-        return view('admin.rings.edit', compact('karats', 'colors', 'size', 'style', 'ring', 'shapes'));
+        return view('admin.rings.edit', compact('karats', 'colors', 'size', 'style', 'ring', 'shapes', 'widths'));
     }
 
     /**
@@ -137,6 +143,7 @@ class RingController extends Controller
             'ring_price' => 'required|numeric',
             'd_shape' => 'required|string',
             'ring_color' => 'required|string',
+            'ring_width' => 'required|string',
             'ring_style' => 'required|string',
             'ring_size' => 'required|string',
             'ring_karat' => 'required|string'
@@ -154,6 +161,7 @@ class RingController extends Controller
             $ring->title = $request->title;
             $ring->slug = $request->slug;
             $ring->ring_color = $request->ring_color;
+            $ring->ring_width = $request->ring_width;
             $ring->ring_style = $request->ring_style;
             $ring->ring_size = $request->ring_size;
             $ring->ring_karat = $request->ring_karat;

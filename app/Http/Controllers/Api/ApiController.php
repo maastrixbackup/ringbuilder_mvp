@@ -10,6 +10,7 @@ use App\Models\Ring;
 use App\Models\RingColor;
 use App\Models\RingSize;
 use App\Models\RingStyle;
+use App\Models\RingWidth;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -38,6 +39,13 @@ class ApiController extends Controller
                 'id' => $c->id,
                 'name' => $c->color_name,
                 'code' => $c->color_code,
+            ];
+        });
+
+        $width = RingWidth::orderBy('id')->get()->map(function ($w) {
+            return [
+                'id' => $w->id,
+                'width' => $w->width,
             ];
         });
 
@@ -71,6 +79,7 @@ class ApiController extends Controller
                 'ring_price' => $p->ring_price,
                 'ring_karat' => $p->ring_karat,
                 'ring_color' => $p->ring_color,
+                'ring_width' => $p->ring_width,
                 'ring_style' => $p->ring_style,
                 'ring_size' => $p->ring_size,
                 'd_shape' => $p->diamond_shape,
@@ -83,6 +92,7 @@ class ApiController extends Controller
         $data = [
             'style' => $style,
             'colors' => $colors,
+            'width' => $width,
             'size' => $size,
             'karats' => $karats,
             'shapes' => $shapes,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DiamondColor;
+use App\Models\DiamondCut;
 use App\Models\DiamondProduct;
 use App\Models\DiamondShape;
 use Illuminate\Support\Str;
@@ -264,6 +265,67 @@ class DiamondController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    public function diamondCutList()
+    {
+        $cuts = DiamondCut::orderBy('id')->get();
+        return view('admin.diamond_cut.list', compact('cuts'));
+    }
+
+    public function storeDiamondCut(Request $request)
+    {
+        if (!$request->cut) {
+            return back()->with('error', 'Diamond cut is required');
+        }
+
+        $diamondCut = DiamondCut::where('cut', $request->cut)->first();
+        if ($diamondCut) {
+            return back()->with('error', 'Cut already exists add different');
+        }
+
+        try {
+            $diamondCut = new DiamondCut();
+            $diamondCut->cut = $request->cut;
+            $diamondCut->save();
+
+            return back()->with('success', 'Cut Added Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function editDiamondCut($id)
+    {
+        $dc = DiamondCut::find($id);
+        return response()->json(['status' => true, 'data' => $dc]);
+    }
+
+    public function updateDiamondCut(Request $request, $id)
+    {
+        if (!$request->cut) {
+            return back()->with('error', 'Diamond cut required');
+        }
+
+        $diamondCut = DiamondCut::where('cut', $request->cut)->where('id', '!=', $id)->first();
+        if ($diamondCut) {
+            return back()->with('error', 'Cut already exists add different');
+        }
+
+        try {
+            $dc = DiamondCut::find($id);
+            $dc->cut = $request->cut;
+            $dc->save();
+            return back()->with('success', 'Cut Updated Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function deleteDiamondCut($id)
+    {
+        DiamondCut::find($id)->delete();
+        return back()->with('success', 'Cut Deleted');
     }
 
     public function diamondColorList()

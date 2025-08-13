@@ -46,15 +46,24 @@
                         <span class="hide-menu">Ring Size</span>
                     </a>
                 </li>
-                {{-- <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->routeIs(['admin.ring-sizes']) ? 'active' : '' }}"
-                        href="{{ route('admin.ring-sizes') }}" aria-expanded="false">
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.ring-color']) ? 'active' : '' }}"
+                        href="{{ route('admin.ring-color') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Metal Color</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.ring-width']) ? 'active' : '' }}"
+                        href="{{ route('admin.ring-width') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Ring Width</span>
                     </a>
-                </li> --}}
+                </li>
 
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->routeIs(['admin.jewellery-karats']) ? 'active' : '' }}"
@@ -65,15 +74,7 @@
                         <span class="hide-menu">Ring Karat</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->routeIs(['admin.ring-color']) ? 'active' : '' }}"
-                        href="{{ route('admin.ring-color') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
-                        <span class="hide-menu">Metal Color</span>
-                    </a>
-                </li>
+
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->routeIs(['admin.rings.index', 'admin.rings.create', 'admin.rings.edit']) ? 'active' : '' }}"
                         href="{{ route('admin.rings.index') }}" aria-expanded="false">
@@ -96,6 +97,15 @@
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Diamond Shape</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamond-cuts']) ? 'active' : '' }}"
+                        href="{{ route('admin.diamond-cuts') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Diamond Cut</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

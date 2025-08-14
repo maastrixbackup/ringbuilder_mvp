@@ -74,14 +74,15 @@
                         <div class="row mb-2">
                             <label for="cut" class="col-md-3 my-2 d-flex justify-content-end ">Cut*</label>
                             <div class="form-group col-md-8">
-                                @php
+                                {{-- @php
                                     $cuts = ['Good', 'Very-Good', 'Excellent'];
-                                @endphp
+                                @endphp --}}
                                 <select required name="cut" id="cut" class="form-control">
                                     <option value="" selected disabled>Select Size</option>
-                                    @foreach ($cuts as $k => $v)
-                                        <option value="{{ $v }}" {{ $diamond->cut == $v ? 'selected' : '' }}>
-                                            {{ $v }}
+                                    @foreach ($dCuts as $dCut)
+                                        <option value="{{ $dCut->cut }}"
+                                            {{ $diamond->cut == $dCut->cut ? 'selected' : '' }}>
+                                            {{ $dCut->cut }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -113,13 +114,14 @@
                             <label for="color" class="col-md-3 my-2 d-flex justify-content-end ">Color*</label>
                             <div class="form-group col-md-8">
                                 <select required name="color" id="color" class="form-control">
-                                    @php
+                                    {{-- @php
                                         $colors = ['M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
-                                    @endphp
+                                    @endphp --}}
                                     <option value="" selected disabled>Select Color</option>
-                                    @foreach ($colors as $K => $c)
-                                        <option value="{{ $c }}"{{ $diamond->color == $c ? 'selected' : '' }}>
-                                            {{ $c }}
+                                    @foreach ($dColors as $dColor)
+                                        <option
+                                            value="{{ $dColor->title }}"{{ $diamond->color == $dColor->title ? 'selected' : '' }}>
+                                            {{ $dColor->title }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -145,8 +147,17 @@
                         <div class="row mb-2">
                             <label for="clarity" class="col-md-3 my-2 d-flex justify-content-end ">Clarity*</label>
                             <div class="form-group col-md-8">
-                                <input type="text" class="form-control" name="clarity" id="clarity"
-                                    value="{{ $diamond->clarity }}" placeholder="Ex:- VS2">
+                                {{-- <input type="text" class="form-control" name="clarity" id="clarity"
+                                    value="{{ $diamond->clarity }}" placeholder="Ex:- VS2"> --}}
+                                <select required name="clarity" id="clarity" class="form-control">
+                                    <option value="" selected disabled>Select Clarity</option>
+                                    @foreach ($dClarity as $dc)
+                                        <option value="{{ $dc->clarity }}"
+                                            {{ $diamond->clarity == $dc->clarity ? 'selected' : '' }}>
+                                            {{ $dc->clarity }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 @error('clarity')
                                     <div class="alert alert-sm alert-danger my-2 py-1" id="auto-alert">
                                         {{ $message }}

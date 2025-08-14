@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DiamondClarity;
 use App\Models\DiamondColor;
 use App\Models\DiamondCut;
 use App\Models\DiamondProduct;
@@ -27,8 +28,11 @@ class DiamondController extends Controller
      */
     public function create()
     {
+        $dCuts = DiamondCut::orderBy('id')->get();
         $dShapes = DiamondShape::orderBy('id')->get();
-        return view('admin.diamon_products.add', compact('dShapes'));
+        $dColors = DiamondColor::orderBy('id')->get();
+        $dClarity = diamondClarity::orderBy('id')->get();
+        return view('admin.diamon_products.add', compact('dShapes', 'dCuts', 'dColors', 'dClarity'));
     }
 
     /**
@@ -89,7 +93,11 @@ class DiamondController extends Controller
     {
         $diamond = DiamondProduct::find($id);
         $dShapes = DiamondShape::orderBy('id')->get();
-        return view('admin.diamon_products.edit', compact('diamond', 'dShapes'));
+
+        $dCuts = DiamondCut::orderBy('id')->get();
+        $dColors = DiamondColor::orderBy('id')->get();
+        $dClarity = diamondClarity::orderBy('id')->get();
+        return view('admin.diamon_products.edit', compact('diamond', 'dShapes','dCuts','dColors','dClarity'));
     }
 
     /**
@@ -390,6 +398,68 @@ class DiamondController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    public function diamondClarity()
+    {
+        $clarities = DiamondClarity::orderBy('id')->get();
+        return view('admin.diamond_clarity.list', compact('clarities'));
+    }
+
+    public function diamondClarityStore(Request $request)
+    {
+        if (!$request->clarity) {
+            return back()->with('error', 'Clarity is required');
+        }
+
+        $diamondClarity = diamondClarity::where('clarity', $request->clarity)->first();
+        if ($diamondClarity) {
+            return back()->with('error', 'Clarity already exists add different');
+        }
+
+        try {
+            $diamondClarity = new diamondClarity();
+            $diamondClarity->clarity = $request->clarity;
+            $diamondClarity->save();
+
+            return back()->with('success', 'Clarity Added Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function diamondClarityEdit($id)
+    {
+        $clarity = DiamondClarity::find($id);
+        return response()->json(['status' => true, 'data' => $clarity]);
+    }
+
+    public function diamondClarityUpdate(Request $request, $id)
+    {
+
+        if (!$request->clarity) {
+            return back()->with('error', 'Diamond clarity required');
+        }
+
+        $diamondClarity = DiamondClarity::where('clarity', $request->clarity)->where('id', '!=', $id)->first();
+        if ($diamondClarity) {
+            return back()->with('error', 'clarity already exists add different');
+        }
+
+        try {
+            $dc = DiamondClarity::find($id);
+            $dc->clarity = $request->clarity;
+            $dc->save();
+            return back()->with('success', 'Clarity Updated Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function diamondClarityDelete($id)
+    {
+        DiamondClarity::find($id)->delete();
+        return back()->with('success', 'Clarity deleted successfully.');
     }
 
     public function slugChecker($slug)

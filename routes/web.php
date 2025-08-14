@@ -93,6 +93,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/diamond-color-edit/{id}', [DiamondController::class, 'diamondColorEdit'])->name('diamond-color-edit');
         Route::post('/diamond-color-update/{id}', [DiamondController::class, 'diamondColorUpdate'])->name('diamond-color-update');
         Route::delete('/delete-color/{id}', [DiamondController::class, 'deleteDiamondColor'])->name('delete-d-color');
+
+        Route::get('/diamond-clarity', [DiamondController::class, 'diamondClarity'])->name('diamond-clarity');
+        Route::post('/diamond-clarity-store', [DiamondController::class, 'diamondClarityStore'])->name('diamond-clarity-store');
+        Route::get('/diamond-clarity-edit/{id}', [DiamondController::class, 'diamondClarityEdit'])->name('diamond-clarity-edit');
+        Route::post('/diamond-clarity-update/{id}', [DiamondController::class, 'diamondClarityUpdate'])->name('diamond-clarity-update');
+        Route::delete('/diamond-clarity-delete/{id}', [DiamondController::class, 'diamondClarityDelete'])->name('diamond-clarity-delete');
     });
 });
 

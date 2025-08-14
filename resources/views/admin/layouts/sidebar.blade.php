@@ -118,7 +118,16 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->routeIs(['admin.diamonds.index', 'admin.diamonds.create']) ? 'active' : '' }}"
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamond-clarity']) ? 'active' : '' }}"
+                        href="{{ route('admin.diamond-clarity') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Diamond Clarity</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamonds.index', 'admin.diamonds.create','admin.diamonds.edit']) ? 'active' : '' }}"
                         href="{{ route('admin.diamonds.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>

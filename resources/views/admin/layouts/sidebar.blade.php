@@ -127,7 +127,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->routeIs(['admin.diamonds.index', 'admin.diamonds.create','admin.diamonds.edit']) ? 'active' : '' }}"
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamonds.index', 'admin.diamonds.create', 'admin.diamonds.edit']) ? 'active' : '' }}"
                         href="{{ route('admin.diamonds.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
@@ -135,6 +135,25 @@
                         <span class="hide-menu">Diamond Products</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamond-polish']) ? 'active' : '' }}"
+                        href="{{ route('admin.diamond-polish') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Diamond Polish</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs(['admin.diamond-symmetry']) ? 'active' : '' }}"
+                        href="{{ route('admin.diamond-symmetry') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Diamond Symmetry</span>
+                    </a>
+                </li>
+
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

@@ -99,6 +99,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/diamond-clarity-edit/{id}', [DiamondController::class, 'diamondClarityEdit'])->name('diamond-clarity-edit');
         Route::post('/diamond-clarity-update/{id}', [DiamondController::class, 'diamondClarityUpdate'])->name('diamond-clarity-update');
         Route::delete('/diamond-clarity-delete/{id}', [DiamondController::class, 'diamondClarityDelete'])->name('diamond-clarity-delete');
+
+        Route::get('/diamond-polish', [DiamondController::class, 'diamondPolishList'])->name('diamond-polish');
+        Route::post('/store-polish', [DiamondController::class, 'storeDiamondPolish'])->name('store-d-polish');
+        Route::get('/edit-polish/{id}', [DiamondController::class, 'editDiamondPolish'])->name('edit-d-polish');
+        Route::post('/update-polish/{id}', [DiamondController::class, 'updateDiamondPolish'])->name('update-d-polish');
+        Route::delete('/delete-polish/{id}', [DiamondController::class, 'deleteDiamondPolish'])->name('delete-d-polish');
+
+        Route::get('/diamond-symmetry', [DiamondController::class, 'diamondSymmetryList'])->name('diamond-symmetry');
+        Route::post('/store-symmetry', [DiamondController::class, 'storeDiamondSymmetry'])->name('store-d-symmetry');
+        Route::get('/edit-symmetry/{id}', [DiamondController::class, 'editDiamondSymmetry'])->name('edit-d-symmetry');
+        Route::post('/update-symmetry/{id}', [DiamondController::class, 'updateDiamondSymmetry'])->name('update-d-symmetry');
+        Route::delete('/delete-symmetry/{id}', [DiamondController::class, 'deleteDiamondSymmetry'])->name('delete-d-symmetry');
     });
 });
 

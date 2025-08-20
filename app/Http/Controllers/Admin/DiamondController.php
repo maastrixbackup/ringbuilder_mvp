@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\DiamondClarity;
 use App\Models\DiamondColor;
 use App\Models\DiamondCut;
+use App\Models\DiamondPolish;
 use App\Models\DiamondProduct;
 use App\Models\DiamondShape;
+use App\Models\DiamondSymmetry;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -97,7 +99,7 @@ class DiamondController extends Controller
         $dCuts = DiamondCut::orderBy('id')->get();
         $dColors = DiamondColor::orderBy('id')->get();
         $dClarity = diamondClarity::orderBy('id')->get();
-        return view('admin.diamon_products.edit', compact('diamond', 'dShapes','dCuts','dColors','dClarity'));
+        return view('admin.diamon_products.edit', compact('diamond', 'dShapes', 'dCuts', 'dColors', 'dClarity'));
     }
 
     /**
@@ -460,6 +462,132 @@ class DiamondController extends Controller
     {
         DiamondClarity::find($id)->delete();
         return back()->with('success', 'Clarity deleted successfully.');
+    }
+
+    public function diamondPolishList()
+    {
+        $polishes = DiamondPolish::orderBy('id')->get();
+        return view('admin.diamond_polish.list', compact('polishes'));
+    }
+
+    public function storeDiamondPolish(Request $request)
+    {
+        if (!$request->polish) {
+            return back()->with('error', 'Diamond polish is required');
+        }
+
+        $diamondPolish = DiamondPolish::where('polish', $request->polish)->first();
+        if ($diamondPolish) {
+            return back()->with('error', 'Polish already exists, add different');
+        }
+
+        try {
+            $diamondPolish = new DiamondPolish();
+            $diamondPolish->polish = $request->polish;
+            $diamondPolish->save();
+
+            return back()->with('success', 'Polish Added Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function editDiamondPolish($id)
+    {
+        $dp = DiamondPolish::find($id);
+        return response()->json(['status' => true, 'data' => $dp]);
+    }
+
+    public function updateDiamondPolish(Request $request, $id)
+    {
+        if (!$request->polish) {
+            return back()->with('error', 'Diamond polish is required');
+        }
+
+        $diamondPolish = DiamondPolish::where('polish', $request->polish)
+            ->where('id', '!=', $id)
+            ->first();
+        if ($diamondPolish) {
+            return back()->with('error', 'Polish already exists, add different');
+        }
+
+        try {
+            $dp = DiamondPolish::find($id);
+            $dp->polish = $request->polish;
+            $dp->save();
+            return back()->with('success', 'Polish Updated Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function deleteDiamondPolish($id)
+    {
+        DiamondPolish::find($id)->delete();
+        return back()->with('success', 'Polish Deleted');
+    }
+
+    public function diamondSymmetryList()
+    {
+        $symmetries = DiamondSymmetry::orderBy('id')->get();
+        return view('admin.diamond_symmetry.list', compact('symmetries'));
+    }
+
+    public function storeDiamondSymmetry(Request $request)
+    {
+        if (!$request->symmetry) {
+            return back()->with('error', 'Diamond symmetry is required');
+        }
+
+        $diamondSymmetry = DiamondSymmetry::where('symmetry', $request->symmetry)->first();
+        if ($diamondSymmetry) {
+            return back()->with('error', 'Symmetry already exists, add different');
+        }
+
+        try {
+            $diamondSymmetry = new DiamondSymmetry();
+            $diamondSymmetry->symmetry = $request->symmetry;
+            $diamondSymmetry->save();
+
+            return back()->with('success', 'Symmetry Added Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function editDiamondSymmetry($id)
+    {
+        $ds = DiamondSymmetry::find($id);
+        return response()->json(['status' => true, 'data' => $ds]);
+    }
+
+    public function updateDiamondSymmetry(Request $request, $id)
+    {
+        if (!$request->symmetry) {
+            return back()->with('error', 'Diamond symmetry is required');
+        }
+
+        $diamondSymmetry = DiamondSymmetry::where('symmetry', $request->symmetry)
+            ->where('id', '!=', $id)
+            ->first();
+        if ($diamondSymmetry) {
+            return back()->with('error', 'Symmetry already exists, add different');
+        }
+
+        try {
+            $ds = DiamondSymmetry::find($id);
+            $ds->symmetry = $request->symmetry;
+            $ds->save();
+            return back()->with('success', 'Symmetry Updated Successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function deleteDiamondSymmetry($id)
+    {
+        DiamondSymmetry::find($id)->delete();
+        return back()->with('success', 'Symmetry Deleted');
     }
 
     public function slugChecker($slug)

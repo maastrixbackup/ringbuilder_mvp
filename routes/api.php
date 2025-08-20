@@ -25,7 +25,10 @@ Route::get('/ping', function (Request $request) {
 
 Route::get('getRingFilterData', [ApiController::class, 'getRingFilterData']);
 Route::get('ring-products', [ApiController::class, 'ringProducts']);
-Route::any('diamond-products', [ApiController::class, 'diamondProducts']);
+Route::get('ring-product-details/{id}', [ApiController::class, 'ringProductDetails']);
+Route::get('getDiamondFilterData', [ApiController::class, 'getDiamondFilterData']);
+Route::get('diamond-products', [ApiController::class, 'diamondProducts']);
+Route::get('diamondProductDetails/{id}', [ApiController::class, 'diamondProductDetails']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
